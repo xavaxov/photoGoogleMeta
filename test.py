@@ -17,6 +17,10 @@ for name in files:
 
     for i in range(len(subfiles)-1):
         file_img = subfiles[i]
+
+        if not(file_img[len(file_img)-3:] == 'jpg' and files[i+1] == file_img + '.json'):
+            continue
+
         if file_img[len(file_img)-3:] == 'jpg':
             if subfiles[i+1] == file_img + '.json':
                 file_json = subfiles[i+1]
