@@ -22,11 +22,12 @@ print(subdirectory)
 for name in subdirectory:
     files = os.listdir(os.path.join(directory,name))
     files.sort()
+    print(files)
 
     for i in range(len(files)-1):
         file_img = files[i]
 
-        if not(file_img[len(file_img)-3:] == 'JPG' and files[i+1] == file_img + '.json'):
+        if not(file_img[len(file_img)-3:] == 'jpg' and files[i+1] == file_img + '.json'):
             continue
 
         file_json = files[i+1]
@@ -44,10 +45,10 @@ for name in subdirectory:
         time_file_year = datetime.fromtimestamp(timestamp_file).strftime('%Y')
         time_file_month = datetime.fromtimestamp(timestamp_file).strftime('%m')
 
-        print(time_file_str)
+        print(time_file_str, end = ' ')
 
         try:
-            #img.delete_all()
+            img.delete_all()
             img.datetime_original = time_file_str
 
             try:
@@ -60,7 +61,7 @@ for name in subdirectory:
             except:
                 pass     
 
-            with open(os.path.join(time_file_year,time_file_month,file_img), 'wb') as updated_img:
+            with open(os.path.join(time_file_year,time_file_month,time_file_str + '.jpg'), 'wb') as updated_img:
                 updated_img.write(img.get_file())
 
 
