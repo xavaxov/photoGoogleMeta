@@ -2,10 +2,17 @@ from exif import Image
 import json
 from datetime import datetime
 import os
+import traceback
+
 
 # Указываем путь к директории
-directory = "/Загрузки/Takeout/Google Фото"
- 
+directory = "/Users/aleksei/Desktop/Takeout/Google Фото"
+
+try:
+    os.remove(os.path.join(directory,'.DS_Store'))
+except:
+    pass  
+
 # Получаем список файлов
 subdirectory = os.listdir(directory)
  
@@ -14,11 +21,12 @@ print(subdirectory)
 
 for name in subdirectory:
     files = os.listdir(os.path.join(directory,name))
+    files.sort()
 
     for i in range(len(files)-1):
         file_img = files[i]
 
-        if not(file_img[len(file_img)-3:] == 'jpg' and files[i+1] == file_img + '.json'):
+        if not(file_img[len(file_img)-3:] == 'JPG' and files[i+1] == file_img + '.json'):
             continue
 
         file_json = files[i+1]
@@ -27,8 +35,8 @@ for name in subdirectory:
         with open(os.path.join(directory,name,file_img), 'rb') as img:
             img = Image(img)
 
-        with open(os.path.join(directory,name,file_json), 'r') as file_json:
-            templates = json.load(file_json)
+        with open(os.path.join(directory,name,file_json), 'r') as fjson:
+            templates = json.load(fjson)
 
         timestamp_file = int(templates['photoTakenTime']['timestamp']) - 3*60*60
         
@@ -57,6 +65,7 @@ for name in subdirectory:
 
 
             os.remove(os.path.join(directory,name,file_img))
+            os.remove(os.path.join(directory,name,file_json))
                 
         except:
             print('\n\n--- bug --- \n' + file_img, end = '\n\n')
